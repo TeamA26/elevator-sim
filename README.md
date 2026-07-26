@@ -52,17 +52,6 @@ dotnet run --project src/ElevatorSim -- \
 - Assigned-but-waiting passengers **reserve a capacity slot** so we do not over-assign when avoidable; if every car is reserved-full, assignment still happens (immediate assignment is required) and boarding waits for free space.
 - Floors are numbered `1..N`.
 
-## Time spent
-
-_Fill in before submission:_ approximately **TBD** hours.
-
-## What I’d improve with more time
-
-- Non-zero door dwell and passenger boarding rates
-- Richer cost model (direction alignment, load balancing, predicted arrivals)
-- Zone-based and express elevators (bonus)
-- Fairness vs efficiency metrics and charts for the presentation
-- Simple visualization of car positions over time
 
 ## Project layout
 
@@ -70,24 +59,5 @@ _Fill in before submission:_ approximately **TBD** hours.
 src/ElevatorSim/        # domain, simulation, dispatchers, CSV loader, CLI
 tests/ElevatorSim.Tests/
 samples/requests.csv
-presentation/           # Reveal.js walkthrough (markdown-slides)
 ```
 
-## Presentation
-
-Code walkthrough slides live under [`presentation/`](presentation/). Open the generated deck:
-
-```bash
-open presentation/index.html
-```
-
-Source markdown: [`presentation/presentation.md`](presentation/presentation.md). Rebuild with [markdown-slides](https://github.com/dadoomer/markdown-slides) (do not use `--output_dir .` — it deletes the markdown):
-
-```bash
-python3 -m pip install git+https://github.com/dadoomer/markdown-slides.git
-export PATH="$HOME/Library/Python/3.9/bin:$PATH"   # if mdslides is not on PATH
-cd presentation
-mdslides presentation.md --output_dir /tmp/elevator-slides
-cp -R /tmp/elevator-slides/. .
-open index.html
-```
