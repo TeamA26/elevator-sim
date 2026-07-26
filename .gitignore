@@ -1,0 +1,6 @@
+# Ignore build outputs
+**/bin/
+**/obj/
+*.user
+.vs/
+*.log
