@@ -2,6 +2,13 @@
 
 Discrete-time **Destination Dispatch** elevator simulator in C# (.NET 9). Passengers provide origin and destination at request time; the system assigns a car immediately.
 
+Two dispatchers are implemented:
+
+- **`cost`** (default) — Estimates each car’s cost as `ticks_to_pickup + trip_distance`, then assigns to the lowest-cost car that still has spare reserved capacity. Ties break by elevator id. This is the smarter baseline: it favors cars already near the request and short trips over blind load-balancing.
+- **`roundrobin`** — Cycles through cars in order, skipping reserved-full cars when possible. Ignores distance and direction; useful as a simple comparison baseline via `--algorithm compare`.
+
+Both still assign immediately even if every car is reserved-full (boarding then waits for free space).
+
 ## Prerequisites
 
 Install the **.NET 9 SDK** (includes the runtime and `dotnet` CLI):
