@@ -14,13 +14,16 @@ public sealed class RoundRobinDispatcher : IDispatcher
         if (elevators.Count == 0)
             throw new InvalidOperationException("No elevators available.");
 
+        // Walk the list once starting at _nextIndex (wrapping with %). Prefer the first
+        // car with spare capacity, then advance _nextIndex past it so the next call
+        // continues the rotation instead of always hitting the same elevator.
         for (var attempt = 0; attempt < elevators.Count; attempt++)
         {
             var index = (_nextIndex + attempt) % elevators.Count;
             var elevator = elevators[index];
             if (elevator.HasSpareCapacity)
             {
-                _nextIndex = (index + 1) % elevators.Count;
+                _nextIndex = (index + 1) % elevators.Count; // circular wrap
                 return elevator;
             }
         }
