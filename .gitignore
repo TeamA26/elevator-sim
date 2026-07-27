@@ -4,3 +4,6 @@
 *.user
 .vs/
 *.log
+
+# macOS
+.DS_Store
