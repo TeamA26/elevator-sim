@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Text;
+
 namespace ElevatorSim;
 
 public sealed class Simulation
@@ -16,6 +19,35 @@ public sealed class Simulation
         // Sorted copy — only dequeue when time == now (no peeking for decisions).
         _requests = requests.OrderBy(r => r.Time).ThenBy(r => r.Id, StringComparer.Ordinal).ToList();
         ValidateRequests(_requests, config);
+    }
+
+    public static SimulationResult RunSimulation(
+        SimulationConfig config,
+        IDispatcher dispatcher,
+        IReadOnlyList<PassengerRequest> requests,
+        string? logPath,
+        bool writeLog)
+    {
+        var simulation = new Simulation(config, dispatcher, requests);
+        var result = simulation.Run();
+
+        if (writeLog)
+        {
+            var text = FormatPositionLog(result);
+            if (string.IsNullOrEmpty(logPath))
+            {
+                Console.WriteLine("=== Elevator positions (time, elev1, elev2, ...) ===");
+                Console.Write(text);
+                Console.WriteLine();
+            }
+            else
+            {
+                File.WriteAllText(logPath, text);
+                Console.WriteLine($"Position log written to {logPath}");
+            }
+        }
+
+        return result;
     }
 
     public SimulationResult Run()
@@ -78,6 +110,29 @@ public sealed class Simulation
             DurationTicks = positionLog.Count,
             AlgorithmName = _dispatcher.Name
         };
+    }
+
+    private static string FormatPositionLog(SimulationResult result)
+    {
+        var sb = new StringBuilder();
+        var elevators = result.PositionLog.Count > 0 ? result.PositionLog[0].Length : 0;
+        sb.Append("time");
+        for (var i = 1; i <= elevators; i++)
+            sb.Append(CultureInfo.InvariantCulture, $",elev{i}");
+        sb.AppendLine();
+
+        for (var t = 0; t < result.PositionLog.Count; t++)
+        {
+            sb.Append(t);
+            foreach (var floor in result.PositionLog[t])
+            {
+                sb.Append(',');
+                sb.Append(floor);
+            }
+            sb.AppendLine();
+        }
+
+        return sb.ToString();
     }
 
     private static void ValidateRequests(List<PassengerRequest> requests, SimulationConfig config)
