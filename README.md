@@ -43,11 +43,11 @@ dotnet run --project src/ElevatorSim -- \
 - **Tick order:** admit & assign → alight/board → log floors → move.
 - **Dispatchers:**
   - `**cost`** — assign to the car with lowest estimated `ticks_to_pickup + trip_distance`, preferring cars with spare reserved capacity.
-  - `**roundrobin**` — cycle through cars with spare capacity (baseline for comparison).
+  - `**roundrobin`** — cycle through cars with spare capacity (baseline for comparison).
 
 ## Assumptions & trade-offs
 
-- Boarding and alighting take **0 ticks** (no door dwell).
+- Boarding and alighting take **0 ticks.** 
 - Elevators start **idle at floor 1**.
 - Assigned-but-waiting passengers **reserve a capacity slot** so we do not over-assign when avoidable; if every car is reserved-full, assignment still happens (immediate assignment is required) and boarding waits for free space.
 - Floors are numbered `1..N`.
