@@ -90,8 +90,8 @@ dotnet run --project src/ElevatorSim -- --input samples/requests.csv --algorithm
 ## Project layout
 
 ```
-src/ElevatorSim/        # domain, simulation, dispatchers, CSV loader, CLI
-tests/ElevatorSim.Tests/
-samples/requests.csv
+src/ElevatorSim/          # domain, simulation, dispatchers, CSV loader, CLI
+tests/ElevatorSim.Tests/  # tests
+samples/requests.csv      # sample request
 ```
 
