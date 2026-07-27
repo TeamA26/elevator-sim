@@ -2,11 +2,35 @@
 
 Discrete-time **Destination Dispatch** elevator simulator in C# (.NET 9). Passengers provide origin and destination at request time; the system assigns a car immediately.
 
-## Build & run
+## Prerequisites
+
+Install the **.NET 9 SDK** (includes the runtime and `dotnet` CLI):
+
+| Platform | How to install |
+| -------- | -------------- |
+| **macOS** | [Download the macOS installer](https://dotnet.microsoft.com/download/dotnet/9.0), or with Homebrew: `brew install dotnet` |
+| **Windows** | [Download the Windows installer](https://dotnet.microsoft.com/download/dotnet/9.0) (x64 or Arm64 to match your machine) |
+
+Confirm the SDK is available:
 
 ```bash
+dotnet --version
+```
+
+You should see a `9.x` version.
+
+## Clone, build & run
+
+```bash
+git clone https://github.com/TeamA26/elevator-sim.git
+cd elevator-sim
 dotnet restore ElevatorSim.sln
 dotnet test ElevatorSim.sln
+```
+
+### macOS / Linux / Git Bash
+
+```bash
 dotnet run --project src/ElevatorSim -- \
   --input samples/requests.csv \
   --floors 55 \
@@ -15,8 +39,15 @@ dotnet run --project src/ElevatorSim -- \
   --algorithm cost
 ```
 
-### Options
+### Windows (PowerShell or Command Prompt)
 
+Put the arguments on one line (line continuation with `\` is a bash feature):
+
+```powershell
+dotnet run --project src/ElevatorSim -- --input samples/requests.csv --floors 55 --elevators 4 --capacity 8 --algorithm cost
+```
+
+### Options
 
 | Flag          | Default                | Description                         |
 | ------------- | ---------------------- | ----------------------------------- |
@@ -27,13 +58,10 @@ dotnet run --project src/ElevatorSim -- \
 | `--algorithm` | `cost`                 | `cost`, `roundrobin`, or `compare`  |
 | `--log`       | (stdout)               | Write position log to a file        |
 
-
 Compare algorithms on the same input:
 
 ```bash
-dotnet run --project src/ElevatorSim -- \
-  --input samples/requests.csv \
-  --algorithm compare
+dotnet run --project src/ElevatorSim -- --input samples/requests.csv --algorithm compare
 ```
 
 ## How it works
